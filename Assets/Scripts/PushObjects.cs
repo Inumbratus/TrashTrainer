@@ -30,7 +30,6 @@ public class PushObjects : MonoBehaviour
         {
             other.GetComponent<Rigidbody>().AddForce(transform.forward * Time.deltaTime * 350.0f);
         }
-        
         //Debug.Log("Attempting to push " + other);
     }
 }

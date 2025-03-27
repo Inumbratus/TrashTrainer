@@ -1,5 +1,6 @@
 using UnityEngine;
 
+//Enum for choosing bin type
 public enum BinType
 {
     Landfill,     // == 0
@@ -15,6 +16,7 @@ public class BinScript : MonoBehaviour
     public GameManager gameManager;
     public bool isBin = true;
     
+    //Update bin lid color
     private void UpdateBin()
     {
         Material material = GetComponent<Renderer>().materials[2];
@@ -42,6 +44,7 @@ public class BinScript : MonoBehaviour
     void Start()
     {
         gameManager = GameObject.FindGameObjectWithTag("GameManager").GetComponent<GameManager>();
+        //Only update bin visuals if it is a standard bin, this is so the disposal at the end of the dispenser doesn't throw errors
         if(isBin)
         {
             UpdateBin();
@@ -57,7 +60,7 @@ public class BinScript : MonoBehaviour
     void OnTriggerEnter(Collider other)
     {
         Debug.Log(other.tag + " item has entered the " + binType + " bin");
-        //PlayerScript player = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerScript>();
+        //Add or remove score based on whether or not trash was properly disposed of
         if (other.tag == binType.ToString())
         {
             gameManager.Score++;
@@ -66,12 +69,9 @@ public class BinScript : MonoBehaviour
         {
             gameManager.Score--;
         }
-        //if(other == player)
-        //{
-        //    player.heldObj = null;
-        //}
-        //DestroyImmediate(other.GetComponent<Rigidbody>());
+        //Prevent Negative score
+        gameManager.Score = Mathf.Clamp(gameManager.Score, 0, 999);
+        //Destroy trash after it's been used for scoring
         Destroy(other.gameObject);
-        //Debug.Log("Score is now " + gameManager.Score);
     }
 }

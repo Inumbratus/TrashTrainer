@@ -23,6 +23,7 @@ public class MenuScript : MonoBehaviour
     {
         if(titleText != null)
         {
+            //Randomise title text color
             if(titleText.color == colorTarget)
             {
                 colorTarget = new Color(Random.value, Random.value, Random.value);

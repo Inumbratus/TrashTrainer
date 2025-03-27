@@ -56,7 +56,6 @@ public class PlayerScript : MonoBehaviour
     {
         MouseLook();
         Locomotion();
-
         if(heldObj != null)
         {
             heldObj.transform.position = Vector3.Lerp(heldObj.transform.position, holdParent.transform.position, 7.0f * Time.deltaTime);
@@ -83,19 +82,19 @@ public class PlayerScript : MonoBehaviour
             if(Physics.SphereCast(playerCamera.transform.position, 0.25f, playerCamera.transform.forward, out hit, interactRange, 8))
             {
                 Debug.Log("Sphere trace hit " + hit.transform.gameObject);
+                //Setup selected object for hold if it's trash
                 if (hit.transform.gameObject.GetComponent<Rigidbody>())
                 {
                     heldObj = hit.transform.gameObject.GetComponent<Rigidbody>();
                     heldObj.useGravity = false;
                     heldObj.linearVelocity = new Vector3(0,0,0);
                     heldObj.transform.parent = holdParent.transform;
-                    //heldObj.transform.position = holdParent.transform.position;
-
                 }
             }
         }
         else
         {
+            // Disable all hold effects when releasing trash, and add a bit of force based on mouse movement so they don't just fall to the floor in an unsatisfying manner
             if (heldObj != null)
             {
                 heldObj.useGravity = true;
@@ -121,13 +120,10 @@ public class PlayerScript : MonoBehaviour
         }
     }
 
+    //Player movement, should be updated to use Unity's newer input system like the grab and throw at some point
     void Locomotion()
     {
         Vector3 moveDir = (transform.TransformDirection(Vector3.forward) * Input.GetAxis("Vertical")) + (transform.TransformDirection(Vector3.right) * Input.GetAxis("Horizontal"));
-        //if(Input.GetButton("Jump") && characterController.isGrounded)
-        //{
-        //    moveDir.y = jumpStrength;
-        //}
         if(!characterController.isGrounded)
         {
             moveDir.y -= 9.8f * Time.deltaTime;

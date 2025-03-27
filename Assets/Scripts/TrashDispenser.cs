@@ -14,6 +14,7 @@ public class TrashDispenser : MonoBehaviour
     void Start()
     {
         gameManager = GameObject.FindGameObjectWithTag("GameManager").GetComponent<GameManager>();
+        //Used for testing
         //SpawnTrash();
     }
 
@@ -26,6 +27,7 @@ public class TrashDispenser : MonoBehaviour
     public void SpawnTrash()
     {
         Instantiate(trashPrefabs[Random.Range(0, trashPrefabs.Length)], spawnPos.transform.position, Random.rotation);
+        //Increase spawn speed every time score reaches a multiple of 5, could use an expansion to reduce speed if score lowers
         if(gameManager.Score > 1 && gameManager.Score % 5 == 0)
         {
             spawnDelay -= 0.15f;
